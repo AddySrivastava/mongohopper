@@ -1,20 +1,55 @@
-# MongoDB Concurrent Worker Tool  
+# Mongohopper
 
-## Overview  
-This tool allows users to perform concurrent read and write operations on a **MongoDB collection** using multiple workers. The operations are defined in a **JSON schema configuration file**, allowing flexible execution of **find, insert, and update** operations with a predefined ratio.  
+## **Overview**
+mongohopper performs **concurrent read and write operations** on a MongoDB collection using worker-based execution.
+It allows configuring **MongoDB connection settings, concurrency levels, and operation types** via command-line arguments and a JSON schema file.
 
-## Features  
-- **Customizable MongoDB connection parameters** via command-line arguments.  
-- **Concurrent workers** to perform operations in parallel.  
-- **Configurable data schema (schema.json)** defining field types and constraints.  
-- **Automated operations** (find, insert, update) based on specified ratios.  
-- Supports **MongoDB Read Preferences** (e.g., `primary`, `secondaryPreferred`).  
+## **Features**
+- Configurable **MongoDB URI, database, and collection** settings
+- Supports **concurrent workers** for parallel execution
+- Allows **custom read preferences** (e.g., `primary`, `secondaryPreferred`)
+- Uses **schema.json** to define **data constraints and automated operations**
+- Supports **find, insert, and update** operations with adjustable ratios
+- Implements **Role-Based Access Control (RBAC)** for restricted views
 
-## Usage  
+---
 
-### **Command-Line Arguments**  
-The tool accepts the following flags:  
+## **Installation**
 
+### **1️⃣ Clone the Repository**
+```sh
+git clone https://github.com/AddySrivastava/mongohopper.git
+cd mongohopper
+```
+
+### **2️⃣ Install Dependencies**
+```sh
+go mod tidy
+```
+
+### **3️⃣ Build the Application**
+```sh
+go build -o mongohopper
+```
+For **Windows**, use:
+```sh
+go build -o mongohopper.exe
+```
+
+### **4️⃣ Run the Application**
+```sh
+./mongohopper -uri="mongodb://localhost:27017" -db="testdb" -collection="users" -workers=10 -requests=1000 -readPreference="primary"
+```
+For **Windows**:
+```sh
+mongohopper.exe -uri="mongodb://localhost:27017" -db="testdb" -collection="users" -workers=10 -requests=1000 -readPreference="primary"
+```
+
+---
+
+## **Configuration**
+
+### **Command-Line Arguments**
 | Flag             | Default Value                 | Description                                  |
 |-----------------|-----------------------------|----------------------------------------------|
 | `-uri`         | `mongodb://localhost:27017`   | MongoDB connection URI                      |
@@ -24,12 +59,14 @@ The tool accepts the following flags:
 | `-requests`    | `1000`                        | Total number of requests                    |
 | `-readPreference` | `primary`                  | Read preference (`primary`, `secondaryPreferred`, etc.) |
 
-### **Schema Configuration (schema.json)**  
-The tool loads a schema definition from `schema.json`, which defines:  
-- **Field constraints** (e.g., data types, unique fields).  
-- **Operations** (insert, update, find) with execution ratios.  
+---
 
-#### **Example schema.json**  
+## **Schema Configuration (schema.json)**
+The tool reads a **JSON schema file (`schema.json`)**, defining:
+- **Field types & constraints** (e.g., unique fields, number ranges).
+- **Automated operations** (insert, update, find) with execution ratios.
+
+### **Example schema.json**
 ```json
 {
     "type": "object",
@@ -51,3 +88,39 @@ The tool loads a schema definition from `schema.json`, which defines:
       { "ratio": 25, "type": "find", "fields": [{"productId": 9299}] }
     ]
 }
+```
+
+### **How Operations Work**
+- **Find Operations (25%)**: Queries documents matching specified fields.
+- **Insert Operations (25%)**: Inserts new documents into the collection.
+- **Update Operations (50%)**: Updates specific fields for matching documents.
+
+---
+
+## **Testing**
+To run tests, use:
+```sh
+go test ./...
+```
+
+---
+
+## **Cross-Platform Build**
+To build for different platforms:
+
+### **Linux**
+```sh
+GOOS=linux GOARCH=amd64 go build -o mongohopper-linux
+```
+
+### **Windows**
+```sh
+GOOS=windows GOARCH=amd64 go build -o mongohopper.exe
+```
+
+### **macOS**
+```sh
+GOOS=darwin GOARCH=amd64 go build -o mongohopper-mac
+```
+
+
