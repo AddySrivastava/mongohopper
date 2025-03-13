@@ -88,6 +88,10 @@ The tool reads a **JSON schema file (`schema.json`)**, defining:
 }
 ```
 
+### **Response** ###
+
+![alt text](https://github.com/AddySrivastava/mongohopper/blob/main/resources/response.png?raw=true)
+
 ### **How Operations Work**
 - **Find Operations (25%)**: Queries documents matching specified fields.
 - **Insert Operations (25%)**: Inserts new documents into the collection.
