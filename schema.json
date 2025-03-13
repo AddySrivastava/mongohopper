@@ -1,0 +1,56 @@
+{
+    "type": "object",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId",
+        "description": "Unique identifier (MongoDB ObjectId)"
+      },
+      "username": {
+        "bsonType": "string",
+        "description": "Unique username",
+        "unique": true
+      },
+      "email": {
+        "bsonType": "string",
+        "description": "Unique email address",
+        "unique": true
+      },
+      "productId": {
+        "bsonType": "int",
+        "description": "Unique product ID",
+        "unique": true
+      },
+      "age": {
+        "bsonType": "int",
+        "description": "Optional age of the person",
+        "minimum": 0,
+        "maximum": 120
+      },
+      "arrayField": {
+        "bsonType": "array",
+        "description": "An array field",
+        "items": {
+          "bsonType": "string",
+          "description": "Array elements (e.g., strings)"
+        }
+      }
+    },
+    "operations": [
+      {
+        "ratio": 50,
+        "type": "update",
+        "fields": [{"productId": 9283}],
+        "updateFields": [{"foo": "bar"}]
+      },
+      {
+        "ratio": 25,
+        "type": "insert",
+        "fields": [{"test": "value"}]
+      },
+      {
+        "ratio": 25,
+        "type": "find",
+        "fields": [{"productId": 9299}]
+      }
+    ]
+  }
