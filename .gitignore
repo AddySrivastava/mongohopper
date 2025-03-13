@@ -1,0 +1,44 @@
+# Binaries & Executables
+*.exe
+*.out
+*.app
+*.dll
+*.so
+*.dylib
+
+# Go Build Artifacts
+/bin/
+/pkg/
+/build/
+*.a
+*.o
+
+# Dependency Caches
+vendor/
+*.mod
+*.sum
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.bak
+*.orig
+
+# Logs & Debugging
+*.log
+*.test
+debug/
+
+# Temporary & Cache Files
+*.tmp
+*.cache
+*.lock
+*.DS_Store
+Thumbs.db
+
+# Testing & Coverage Files
+*.cover
+coverage.out
