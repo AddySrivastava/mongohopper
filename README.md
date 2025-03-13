@@ -10,8 +10,6 @@ It allows configuring **MongoDB connection settings, concurrency levels, and ope
 - Allows **custom read preferences** (e.g., `primary`, `secondaryPreferred`)
 - Uses **schema.json** to define **data constraints and automated operations**
 - Supports **find, insert, and update** operations with adjustable ratios
-- Implements **Role-Based Access Control (RBAC)** for restricted views
-
 ---
 
 ## **Installation**
