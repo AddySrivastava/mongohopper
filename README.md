@@ -95,16 +95,6 @@ The tool reads a **JSON schema file (`schema.json`)**, defining:
 - **Insert Operations (25%)**: Inserts new documents into the collection.
 - **Update Operations (50%)**: Updates specific fields for matching documents.
 
----
-
-## **Testing**
-To run tests, use:
-```sh
-go test ./...
-```
-
----
-
 ## **Cross-Platform Build**
 To build for different platforms:
 
