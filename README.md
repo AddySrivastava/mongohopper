@@ -67,24 +67,24 @@ The tool reads a **JSON schema file (`schema.json`)**, defining:
 ### **Example schema.json**
 ```json
 {
+  "schema": {
     "type": "object",
     "properties": {
-      "_id": { "bsonType": "objectId", "description": "Unique identifier" },
-      "username": { "bsonType": "string", "description": "Unique username", "unique": true },
+      "_id": { "bsonType": "objectId", "description": "Unique identifier (MongoDB ObjectId)" },
+      "username_new_1": { "bsonType": "string", "description": "Unique username", "unique": true },
+      "type": { "bsonType": "enum", "description": "state code", "values": [ "SN", "DL", "MH", "AN", "HY" ] },
       "email": { "bsonType": "string", "description": "Unique email address", "unique": true },
       "productId": { "bsonType": "int", "description": "Unique product ID", "unique": true },
-      "age": { "bsonType": "int", "description": "Optional age", "minimum": 0, "maximum": 120 },
-      "arrayField": {
-        "bsonType": "array",
-        "description": "Array field",
-        "items": { "bsonType": "string" }
-      }
-    },
-    "operations": [
-      { "ratio": 50, "type": "update", "fields": [{"productId": 9283}], "updateFields": [{"foo": "bar"}] },
-      { "ratio": 25, "type": "insert", "fields": [{"test": "value"}] },
-      { "ratio": 25, "type": "find", "fields": [{"productId": 9299}] }
-    ]
+      "age": { "bsonType": "int", "description": "Optional age of the person", "minimum": 0, "maximum": 120 },
+      "arrayField": { "bsonType": "array", "description": "An array field", "items": { "bsonType": "string", "description": "Array elements (e.g., strings)" } }
+    }
+  },
+  "operations": [
+    { "ratio": 10, "type": "update", "fields": [ { "type": "AN" } ], "updates": [ { "age": "45" } ] },
+    { "ratio": 10, "type": "update", "fields": [ { "type": "MH" } ], "updates": [ { "age": "20" } ] },
+    { "ratio": 25, "type": "insert" },
+    { "ratio": 25, "type": "find", "fields": [ { "type": "DL" } ] }
+  ]
 }
 ```
 
