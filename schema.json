@@ -15,6 +15,10 @@
         "description": "state code",
         "values": ["SN", "DL", "MH", "AN", "HY"]
       },
+      "created_date": {
+        "bsonType": "date",
+        "description": "Date of creation"
+      },
       "email": {
         "bsonType": "string",
         "description": "Unique email address",
@@ -22,8 +26,7 @@
       },
       "productId": {
         "bsonType": "int",
-        "description": "Unique product ID",
-        "unique": true
+        "description": "Unique product ID"
       },
       "age": {
         "bsonType": "int",
@@ -42,25 +45,15 @@
     },
     "operations": [
       {
-        "ratio": 10,
+        "ratio": 90,
         "type": "update",
-        "fields": [{"type": "AN"}],
-        "updates": [{"age": "45"}]
+        "fields": [{"policyNumber": "MH"}],
+        "updates": [{"gohopper_update": "randomStringUpdatedValue"}]
       },
       {
         "ratio": 10,
-        "type": "update",
-        "fields": [{"type": "MH"}],
-        "updates": [{"age": "20"}]
-      },
-      {
-        "ratio": 25,
-        "type": "insert"
-      },
-      {
-        "ratio": 25,
         "type": "find",
-        "fields": [{"type": "DL"}]
+        "fields": [{"policyNumber": "DL"}]
       }
     ]
   }
