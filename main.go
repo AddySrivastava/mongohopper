@@ -23,7 +23,7 @@ import (
 
 // Policy struct for JSON file
 type Values struct {
-	Value string `json:"policyNo"`
+	Value string `json:"value"`
 }
 
 var Policies []string
@@ -178,6 +178,8 @@ func calculateTotalRatio(operationList []schema.Operation) int {
 }
 
 func processOperation(ctx context.Context, operationMap schema.Operation, collection *mongo.Collection, docSchema schema.SchemaType) (operation.Operation, error) {
+
+	rand.Seed(time.Now().UnixNano())
 
 	queryValue := Policies[rand.Intn(len(Policies))]
 
