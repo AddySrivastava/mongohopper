@@ -19,10 +19,13 @@ import (
 
 // Operation represents the operations part of the schema (If needed).
 type Operation struct {
-	Ratio        int                      `json:"ratio"`
-	Type         string                   `json:"type"`
-	Fields       []map[string]interface{} `json:"fields"` // or map[string]string if always strings.
-	UpdateFields []map[string]interface{} `json:"updates"`
+	Ratio           int    `json:"ratio"`
+	Type            string `json:"type"`
+	FiterSource     string `json:"fiterSource"` // or map[string]string if always strings.
+	AppendDate      bool   `json:"appendDate"`
+	AppendDateField string `json:"appendDateField"`
+	StartDate       string `json:"startDate"`
+	EndDate         string `json:"endDate"`
 }
 
 // Schema represents the complete schema (If needed)
@@ -43,7 +46,6 @@ type Property struct {
 	Items       *Property     `json:"items,omitempty"`
 	Values      []interface{} `json:"values,omitempty"`
 	currentMax  interface{}
-	currentMin  interface{}
 }
 
 // ParseSchema reads and unmarshals the JSON schema.

@@ -82,11 +82,24 @@ The tool reads a **JSON schema file (`schema.json`)**, defining:
     }
   },
   "operations": [
-    { "ratio": 10, "type": "update", "fields": [ { "type": "AN" } ], "updates": [ { "age": "45" } ] },
-    { "ratio": 10, "type": "update", "fields": [ { "type": "MH" } ], "updates": [ { "age": "20" } ] },
-    { "ratio": 25, "type": "insert" },
-    { "ratio": 25, "type": "find", "fields": [ { "type": "DL" } ] }
-  ]
+      {
+        "ratio": 90,
+        "type": "find",
+        "fiterSource": "filters.json",
+        "appendDate": true,
+        "appendDateField": "completionDate",
+        "startDate": "2022-01-01",
+        "endDate":"2024-12-31"
+      } ,
+      {
+        "ratio": 10,
+        "type": "update",
+        "fiterSource": "filters.json",
+        "appendDate": true,
+        "appendDateField": "completionDate",
+        "startDate": "2022-01-01",
+        "endDate":"2024-12-31"
+      }   ]
 }
 ```
 

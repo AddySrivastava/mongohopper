@@ -45,15 +45,22 @@
     },
     "operations": [
       {
-        "ratio": 90,
+        "ratio": 10,
         "type": "update",
-        "fields": [{"policyNumber": "MH"}],
-        "updates": [{"gohopper_update": "randomStringUpdatedValue"}]
+        "fiterSource": "filters.json",
+        "appendDate": true,
+        "appendDateField": "completionDate",
+        "startDate": "2022-01-01",
+        "endDate":"2024-12-31"
       },
       {
-        "ratio": 10,
+        "ratio": 90,
         "type": "find",
-        "fields": [{"policyNumber": "DL"}]
-      }
+        "fiterSource": "filters.json",
+        "appendDate": true,
+        "appendDateField": "completionDate",
+        "startDate": "2022-01-01",
+        "endDate":"2024-12-31"
+      } 
     ]
   }

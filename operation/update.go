@@ -4,7 +4,6 @@ package operation
 
 import (
 	"context"
-	"dbhopper/schema"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -12,16 +11,16 @@ import (
 
 // UpdateOperation represents an update operation.
 type UpdateOperation struct {
-	Filter       bson.D
-	UpdateFields bson.D
-	Success      int64
-	Failure      int64
+	Filter  bson.D
+	Update  bson.D
+	Success int64
+	Failure int64
 }
 
-func (op *UpdateOperation) Execute(ctx context.Context, collection *mongo.Collection, schemaMap schema.SchemaType) error {
-	op.UpdateFields = bson.D{{Key: "$set", Value: op.UpdateFields}}
+func (op *UpdateOperation) Execute(ctx context.Context, collection *mongo.Collection) error {
+	op.Update = bson.D{{Key: "$set", Value: op.Update}}
 
-	_, err := collection.UpdateMany(ctx, op.Filter, op.UpdateFields)
+	_, err := collection.UpdateMany(ctx, op.Filter, op.Update)
 
 	if err != nil {
 		op.Failure++

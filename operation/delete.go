@@ -4,7 +4,6 @@ package operation
 
 import (
 	"context"
-	"dbhopper/schema"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -17,7 +16,7 @@ type DeleteOperation struct {
 	Failure int64
 }
 
-func (op *DeleteOperation) Execute(ctx context.Context, collection *mongo.Collection, schemaMap schema.SchemaType) error {
+func (op *DeleteOperation) Execute(ctx context.Context, collection *mongo.Collection) error {
 	_, err := collection.DeleteMany(ctx, op.Filter)
 
 	if err != nil {

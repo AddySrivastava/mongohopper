@@ -29,6 +29,7 @@ vendor/
 *.swn
 *.bak
 *.orig
+*.json
 
 # Logs & Debugging
 .vscode/
