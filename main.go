@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"math/rand"
@@ -19,6 +20,25 @@ import (
 	"dbhopper/operation"
 	"dbhopper/schema"
 )
+
+// Policy struct for JSON file
+type Values struct {
+	Value string `json:"value"`
+}
+
+var Policies []string
+
+// Function to load JSON data
+func loadJSONData(filePath string, target interface{}) error {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	decoder := json.NewDecoder(file)
+	return decoder.Decode(target)
+}
 
 func main() {
 	cfg := config.ParseConfig()
@@ -41,8 +61,26 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to parse schema: %v", err)
 	}
+	// Initialize policyNo values globally
+	initializePolicies("values.json")
 
 	runLoadTest(cfg, collection, docSchema)
+}
+
+// Function to initialize global policy list
+func initializePolicies(dataPath string) {
+	var policyRecords []Values
+	if err := loadJSONData(dataPath, &policyRecords); err != nil {
+		log.Fatal("Error loading data file:", err)
+	}
+
+	for _, p := range policyRecords {
+		Policies = append(Policies, p.Value)
+	}
+
+	if len(Policies) == 0 {
+		log.Fatal("No policies found in the JSON file!")
+	}
 }
 
 func runLoadTest(cfg config.Config, collection *mongo.Collection, docSchema schema.SchemaType) {
@@ -141,13 +179,16 @@ func calculateTotalRatio(operationList []schema.Operation) int {
 
 func processOperation(ctx context.Context, operationMap schema.Operation, collection *mongo.Collection, docSchema schema.SchemaType) (operation.Operation, error) {
 
+	rand.Seed(time.Now().UnixNano())
+
+	queryValue := Policies[rand.Intn(len(Policies))]
+
 	filterMap := bson.D{}
 	for _, fieldMap := range operationMap.Fields {
-		for key, value := range fieldMap {
-			filterMap = bson.D{{Key: key, Value: value}}
+		for key, _ := range fieldMap {
+			filterMap = bson.D{{Key: key, Value: queryValue}}
 		}
 	}
-
 	switch operationMap.Type {
 	case "find":
 		op := &operation.FindOperation{Filter: filterMap}
@@ -155,8 +196,8 @@ func processOperation(ctx context.Context, operationMap schema.Operation, collec
 	case "update":
 		updateMap := bson.D{}
 		for _, updateField := range operationMap.UpdateFields {
-			for key, value := range updateField {
-				updateMap = bson.D{{Key: key, Value: value}}
+			for key, _ := range updateField {
+				updateMap = bson.D{{Key: key, Value: queryValue}}
 			}
 		}
 		op := &operation.UpdateOperation{Filter: filterMap, UpdateFields: updateMap}
@@ -167,6 +208,9 @@ func processOperation(ctx context.Context, operationMap schema.Operation, collec
 	case "insert":
 		op := &operation.InsertOperation{}
 		return op, op.Execute(ctx, collection, docSchema)
+	// case "findById":
+	// 	op := &operation.FindByIdOperation{}
+	// 	return op, op.Execute(ctx, collection, docSchema)
 	default:
 		return nil, fmt.Errorf("unsupported operation type: %s", operationMap.Type)
 	}
